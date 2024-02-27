@@ -15,9 +15,17 @@ def load_data():
 
 drug_death = load_data()
 
+# Convert 'Fentanyl' to numeric, coercing errors to NaN
+drug_death['Fentanyl'] = pd.to_numeric(drug_death['Fentanyl'], errors='coerce')
+
+# Fill NaN values with 0 (or another appropriate value)
+drug_death['Fentanyl'] = drug_death['Fentanyl'].fillna(0)
+
+# Convert to integer
+drug_death['Fentanyl'] = drug_death['Fentanyl'].astype(int)
 #############################################################
 # Filter by Drugs and Year
-drug_list = ['Heroin', 'Cocaine', 'Fentanyl_Analogue', 'Oxycodone', 'Oxymorphone', 
+drug_list = ['Heroin', 'Cocaine', 'Fentanyl', 'Fentanyl_Analogue', 'Oxycodone', 'Oxymorphone', 
                     'Ethanol', 'Hydrocodone', 'Benzodiazepine', 'Methadone', 'Amphet', 
                     'Tramad', 'Hydromorphone']
 
@@ -69,9 +77,9 @@ def plot_deaths_by_age_group():
     if selected_drugs:
         bins = [0, 18, 30, 45, 60, 75, 100]
         labels = ['0-18', '19-30', '31-45', '46-60', '61-75', '76-100']
-        drug_death['AgeGroup'] = pd.cut(drug_death['Age'], bins=bins, labels=labels, right=False)
+        drug_death_filtered['AgeGroup'] = pd.cut(drug_death['Age'], bins=bins, labels=labels, right=False)
 
-        deaths_by_agegroup = drug_death['AgeGroup'].value_counts().sort_index()
+        deaths_by_agegroup = drug_death_filtered['AgeGroup'].value_counts().sort_index()
 
         plt.figure(figsize=(10, 6))
         deaths_by_agegroup.plot(kind='bar')
@@ -86,7 +94,7 @@ def plot_deaths_by_age_group():
 def plot_deaths_by_sex():
     st.header('Drug Deaths by Sex')
     if selected_drugs:
-        deaths_by_sex = drug_death['Sex'].value_counts()
+        deaths_by_sex = drug_death_filtered['Sex'].value_counts()
 
         plt.figure(figsize=(10, 6))
         deaths_by_sex.plot(kind='bar')
@@ -101,7 +109,7 @@ def plot_deaths_by_sex():
 def plot_deaths_by_race():
     st.header('Drug Deaths by Race')
     if selected_drugs:
-        deaths_by_race = drug_death['Race'].value_counts()
+        deaths_by_race = drug_death_filtered['Race'].value_counts()
 
         plt.figure(figsize=(10, 6))
         deaths_by_race.plot(kind='bar')
@@ -116,7 +124,7 @@ def plot_deaths_by_race():
 def plot_deaths_by_city():
     st.header('Drug Deaths by (Residence)City')
     if selected_drugs:
-        deaths_by_city = drug_death['ResidenceCity'].value_counts()
+        deaths_by_city = drug_death_filtered['ResidenceCity'].value_counts()
 
         top_n = 8
         deaths_by_city[:top_n].plot(kind='bar', figsize=(10, 6))
@@ -131,7 +139,7 @@ def plot_deaths_by_city():
 def plot_deaths_by_state():
     st.header('Drug Deaths by (Residence)State')
     if selected_drugs:
-        deaths_by_states = drug_death['ResidenceState'].value_counts()
+        deaths_by_states = drug_death_filtered['ResidenceState'].value_counts()
 
         top_n = 8
         deaths_by_states[:top_n].plot(kind='bar', figsize=(10, 6))
@@ -146,7 +154,7 @@ def plot_deaths_by_state():
 def plot_deaths_by_county():
     st.header('Drug Deaths by (Residence)County')
     if selected_drugs:
-        deaths_by_County = drug_death['ResidenceCounty'].value_counts()
+        deaths_by_County = drug_death_filtered['ResidenceCounty'].value_counts()
 
         top_n = 8
         deaths_by_County[:top_n].plot(kind='bar', figsize=(10, 6))
@@ -162,10 +170,10 @@ def plot_cooccurence_of_drug():
     st.header('Co-occurrence of Drugs')
     if selected_drugs:     
         # Convert float to integer
-        drug_death['Fentanyl_Analogue'] = drug_death['Fentanyl_Analogue'].astype(int)
+        drug_death_filtered['Fentanyl_Analogue'] = drug_death_filtered['Fentanyl_Analogue'].astype(int)
         drugs = ['Heroin', 'Cocaine', 'Fentanyl_Analogue', 'Methadone']
         
-        co_occurrence_matrix = drug_death[drugs].T.dot(drug_death[drugs])
+        co_occurrence_matrix = drug_death_filtered[drugs].T.dot(drug_death_filtered[drugs])
 
         # Plot the matrix
         plt.figure(figsize=(8, 6))
@@ -197,9 +205,9 @@ def plot_heatmap_for_drugs():
     st.header('Correlation Matrix of Selected Drugs')
     if selected_drugs:   
         for drug in selected_drugs:
-            drug_death[drug] = pd.to_numeric(drug_death[drug], errors='coerce').fillna(0)
+            drug_death_filtered[drug] = pd.to_numeric(drug_death_filtered[drug], errors='coerce').fillna(0)
 
-        drug_correlation = drug_death[selected_drugs].corr()
+        drug_correlation = drug_death_filtered[selected_drugs].corr()
 
         plt.figure(figsize=(10, 8))
         sns.heatmap(drug_correlation, annot=True, cmap='coolwarm', center=0)
