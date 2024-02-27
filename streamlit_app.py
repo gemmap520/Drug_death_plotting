@@ -225,7 +225,7 @@ state_deaths_mapped = pd.DataFrame([
     (state, deaths, *state_coordinates[state])
     for state, deaths in death_counts.items() if state in state_coordinates
 ], columns=['State', 'NumberOfDeaths', 'Latitude', 'Longitude'])
-state_deaths_mapped['Radius'] = state_deaths_mapped['NumberOfDeaths'].apply(lambda x: max(min(x * 1000, 60000), 40000))
+state_deaths_mapped['Radius'] = state_deaths_mapped['NumberOfDeaths'].apply(lambda x: max(min(x * 1000, 60000), 15000))
 
 def plot_deaths_by_state_pydeck():
     st.header('Drug Deaths by State with PyDeck')
