@@ -171,9 +171,8 @@ def plot_cooccurence_of_drug():
     if selected_drugs:     
         # Convert float to integer
         drug_death_filtered['Fentanyl_Analogue'] = drug_death_filtered['Fentanyl_Analogue'].astype(int)
-        drugs = ['Heroin', 'Cocaine', 'Fentanyl_Analogue', 'Methadone']
         
-        co_occurrence_matrix = drug_death_filtered[drugs].T.dot(drug_death_filtered[drugs])
+        co_occurrence_matrix = drug_death_filtered[selected_drugs].T.dot(drug_death_filtered[selected_drugs])
 
         # Plot the matrix
         plt.figure(figsize=(8, 6))
