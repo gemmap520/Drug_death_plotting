@@ -39,13 +39,13 @@ drug_death_filtered = drug_death[(drug_death['Year'] >= selected_years[0]) & (dr
 
 #############################################################
 # DASHBOARD
-st.title('Drug Deaths Dashboard')
+st.header('Drug Deaths Dashboard :skull:', divider='gray')
 #############################################################
 # Define plotting functions
 #############################################################
 # 1. Drug Death by certain drug: Drug vs. Number of Death
 def plot_death_by_drug():
-    st.header('Drug Deaths by Certain Drugs')
+    st.subheader('Drug Deaths by :rainbow[Certain Drugs]')
     if selected_drugs:
         death_by_drug = drug_death_filtered[selected_drugs].sum().sort_values(ascending=False)
         plt.figure(figsize=(10, 8))
@@ -59,7 +59,7 @@ def plot_death_by_drug():
 #############################################################
 # 2. Drug Death By Year: Year vs. Number of Deaths
 def plot_death_by_year():
-    st.header('Drug Death By Year')
+    st.subheader('Drug Death By :rainbow[Year]')
     if selected_drugs:
         deaths_by_year = drug_death.groupby('Year').size()
         plt.figure(figsize=(10, 6))  
@@ -73,7 +73,7 @@ def plot_death_by_year():
 #############################################################
 # 3. Drug Deaths by Age Group: Age Group vs. Number of Deaths
 def plot_deaths_by_age_group():
-    st.header('Drug Deaths by Age Group')
+    st.subheader('Drug Deaths by :rainbow[Age Group]')
     if selected_drugs:
         bins = [0, 18, 30, 45, 60, 75, 100]
         labels = ['0-18', '19-30', '31-45', '46-60', '61-75', '76-100']
@@ -92,7 +92,7 @@ def plot_deaths_by_age_group():
 #############################################################
 # 4. Drug Death by Sex: Sex vs. Number of Deaths
 def plot_deaths_by_sex():
-    st.header('Drug Deaths by Sex')
+    st.subheader('Drug Deaths by :rainbow[Sex]')
     if selected_drugs:
         deaths_by_sex = drug_death_filtered['Sex'].value_counts()
 
@@ -107,7 +107,7 @@ def plot_deaths_by_sex():
 #############################################################
 # 5. Drug Death by Race: Race vs. Number of Deaths
 def plot_deaths_by_race():
-    st.header('Drug Deaths by Race')
+    st.subheader('Drug Deaths by :rainbow[Race]')
     if selected_drugs:
         deaths_by_race = drug_death_filtered['Race'].value_counts()
 
@@ -122,7 +122,7 @@ def plot_deaths_by_race():
 #############################################################
 # 6-1. Drug Death by City: City vs. Number of Deaths
 def plot_deaths_by_city():
-    st.header('Drug Deaths by (Residence)City')
+    st.subheader('Drug Deaths by :rainbow[(Residence)City]')
     if selected_drugs:
         deaths_by_city = drug_death_filtered['ResidenceCity'].value_counts()
 
@@ -137,7 +137,7 @@ def plot_deaths_by_city():
 #############################################################
 # 6-2. Drug Death by State: State vs. Number of Deaths
 def plot_deaths_by_state():
-    st.header('Drug Deaths by (Residence)State')
+    st.subheader('Drug Deaths by :rainbow[(Residence)State]')
     if selected_drugs:
         deaths_by_states = drug_death_filtered['ResidenceState'].value_counts()
 
@@ -152,7 +152,7 @@ def plot_deaths_by_state():
 #############################################################
 # 6-3. Drug Death by County: County vs. Number of Deaths
 def plot_deaths_by_county():
-    st.header('Drug Deaths by (Residence)County')
+    st.subheader('Drug Deaths by :rainbow[(Residence)County]')
     if selected_drugs:
         deaths_by_County = drug_death_filtered['ResidenceCounty'].value_counts()
 
@@ -167,7 +167,7 @@ def plot_deaths_by_county():
 #############################################################
 # 7. Co-occurrence of Drugs: Heroin, Cocaine, Fentanyl_Analogue, Methadone
 def plot_cooccurence_of_drug():
-    st.header('Co-occurrence of Drugs')
+    st.subheader('Co-occurrence of :rainbow[Drugs]')
     if selected_drugs:     
         # Convert float to integer
         drug_death_filtered['Fentanyl_Analogue'] = drug_death_filtered['Fentanyl_Analogue'].astype(int)
@@ -183,7 +183,7 @@ def plot_cooccurence_of_drug():
 #############################################################
 # 8-1. Drug Deaths by Year for Selected Drugs
 def plot_death_by_year_for_drugs():
-    st.header('Drug Deaths by Year for Selected Drugs')
+    st.subheader('Drug Deaths by :rainbow[Year for Selected Drugs]')
     if selected_drugs:     
         yearly_drug_data = drug_death.groupby('Year')[selected_drugs].sum()
         
@@ -201,7 +201,7 @@ def plot_death_by_year_for_drugs():
 #############################################################
 # 8-2. Heatmap: correlation matrix for the selected drugs
 def plot_heatmap_for_drugs():
-    st.header('Correlation Matrix of Selected Drugs')
+    st.subheader(':rainbow[Correlation Matrix] of :rainbow[Selected Drugs]')
     if selected_drugs:   
         for drug in selected_drugs:
             drug_death_filtered[drug] = pd.to_numeric(drug_death_filtered[drug], errors='coerce').fillna(0)
@@ -215,7 +215,7 @@ def plot_heatmap_for_drugs():
 
 #############################################################
 # Drug Deaths by State with PyDeck
-death_counts = drug_death['ResidenceState'].value_counts()
+death_counts = drug_death_filtered['ResidenceState'].value_counts()
 
 state_coordinates = {
     'CT': [41.6032, -73.0877], 'NY': [40.7128, -74.0060], 'PA': [41.2033, -77.1945], 
@@ -235,7 +235,7 @@ state_deaths_mapped = pd.DataFrame([
 state_deaths_mapped['Radius'] = state_deaths_mapped['NumberOfDeaths'].apply(lambda x: max(min(x * 1000, 60000), 15000))
 
 def plot_deaths_by_state_pydeck():
-    st.header('Drug Deaths by State with PyDeck')
+    st.subheader('Drug Deaths :rainbow[by State with Geographically]')
 
     layer = pdk.Layer(
         'ScatterplotLayer',
