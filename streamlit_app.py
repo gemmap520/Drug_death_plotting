@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import pydeck as pdk
-import openai
 
 #############################################################
 # Load drug_deaths
