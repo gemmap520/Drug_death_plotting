@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import pydeck as pdk
+import openai
 
 #############################################################
 # Load drug_deaths
@@ -36,10 +37,9 @@ selected_years = st.sidebar.slider('Select year range:',
                                    (int(drug_death['Year'].min()), 
                                     int(drug_death['Year'].max())))
 drug_death_filtered = drug_death[(drug_death['Year'] >= selected_years[0]) & (drug_death['Year'] <= selected_years[1])]
-
 #############################################################
 # DASHBOARD
-st.header('Drug Deaths Dashboard :skull:', divider='gray')
+st.header(f'Drug Deaths Analysis for :blue[{selected_years[0]} to {selected_years[1]}]', divider='gray')
 #############################################################
 # Define plotting functions
 #############################################################
