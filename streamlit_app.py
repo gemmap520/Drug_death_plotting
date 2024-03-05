@@ -6,7 +6,6 @@ from datetime import datetime
 import pydeck as pdk
 
 #############################################################
-# Load drug_deaths
 def load_data():
     data = pd.read_csv('drug_deaths.csv')
     data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
@@ -15,13 +14,8 @@ def load_data():
 
 drug_death = load_data()
 
-# Convert 'Fentanyl' to numeric, coercing errors to NaN
 drug_death['Fentanyl'] = pd.to_numeric(drug_death['Fentanyl'], errors='coerce')
-
-# Fill NaN values with 0 (or another appropriate value)
 drug_death['Fentanyl'] = drug_death['Fentanyl'].fillna(0)
-
-# Convert to integer
 drug_death['Fentanyl'] = drug_death['Fentanyl'].astype(int)
 #############################################################
 # Filter by Drugs and Year
